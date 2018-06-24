@@ -1,5 +1,5 @@
 class config_db#(type T);
-  static T db[string];
+  local static T db[string];
   
   static function int set(string name, T val);
     T temp;
@@ -30,13 +30,13 @@ module tb;
       config_db#(string)::set("Name2", "Kaushik");
       
       if (config_db#(string)::get("Name1", name)) begin
-      	config_db#(int)::get(name, salary);
+        if(!config_db#(int)::get(name, salary))$display("name not found");
       end
       
       $display("%s earns %d K ", name, salary);
       
       if (config_db#(string)::get("Name2", name)) begin
-      	config_db#(int)::get(name, salary);
+        if(!config_db#(int)::get(name, salary))$display("name not found");
       end
       
       $display("%s earns %d K ", name, salary);
