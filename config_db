@@ -1,0 +1,44 @@
+class config_db#(type T);
+  static T db[string];
+  
+  static function int set(string name, T val);
+    T temp;
+    if (!$cast(temp,val)) begin
+      $display("Incompatible types");
+      return 0;
+    end
+    db[name] = val ;
+    return 1;
+  endfunction
+  
+  static function int get(string name, ref T val);
+    if (db.exists(name)) begin 
+      val = db[name];
+      return 1;
+    end
+    else return 0;
+  endfunction
+endclass
+
+module tb;
+    string name;
+    int salary;
+    initial begin
+      config_db#(int)::set("Sumedha", 100);
+      config_db#(int)::set("Kaushik", 10);
+      config_db#(string)::set("Name1", "Sumedha");
+      config_db#(string)::set("Name2", "Kaushik");
+      
+      if (config_db#(string)::get("Name1", name)) begin
+      	config_db#(int)::get(name, salary);
+      end
+      
+      $display("%s earns %d K ", name, salary);
+      
+      if (config_db#(string)::get("Name2", name)) begin
+      	config_db#(int)::get(name, salary);
+      end
+      
+      $display("%s earns %d K ", name, salary);
+    end
+endmodule 
